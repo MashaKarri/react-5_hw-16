@@ -1,44 +1,14 @@
-import { useState, useEffect } from "react";
+import { useFeedback } from "../../hooks/useFeedback.js";
 import { Section } from "../Section/Section.jsx";
 import { FeedbackOptions } from "../FeedbackOptions/FeedbackOptions.jsx";
 import { Statistics } from "../Statistics/Statistics.jsx";
 import { Notification } from "../Notification/Notification.jsx";
 
 export function FeedbackApp() {
-  const [feedback, setFeedback] = useState({
-    good: 0,
-    neutral: 0,
-    bad: 0,
-  });
-
-  const handleLeaveFeedback = (option) => {
-    setFeedback((previous) => ({
-      ...previous,
-      [option]: previous[option] + 1,
-    }));
-  };
-
-  const countTotalFeedback = () => {
-    const { good, neutral, bad } = feedback;
-    return good + neutral + bad;
-  };
-
-  const countPositiveFeedbackPercentage = () => {
-    const total = countTotalFeedback();
-    if (total === 0) {
-      return 0;
-    }
-    return Math.round((feedback.good / total) * 100);
-  };
+  const { feedback, handleLeaveFeedback, total, positivePercentage } =
+    useFeedback();
 
   const { good, neutral, bad } = feedback;
-
-  const total = countTotalFeedback();
-  const positivePercentage = countPositiveFeedbackPercentage();
-
-  useEffect(() => {
-    console.log("Feedback updated:", feedback);
-  }, [feedback]);
 
   return (
     <div>
